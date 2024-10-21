@@ -1,0 +1,15 @@
+services:
+  log_server:
+    build: log_server
+    volumes:
+      - ./log_server:/app
+    tty: true
+    ports:
+      - "8000:8000"
+  lab_server:
+    build: lab_server
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./lab_server:/app
