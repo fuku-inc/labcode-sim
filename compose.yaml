@@ -6,6 +6,8 @@ services:
     tty: true
     ports:
       - "8000:8000"
+    networks:
+      - network01
   lab_server:
     build: lab_server
     tty: true
@@ -13,3 +15,8 @@ services:
       - "8080:8080"
     volumes:
       - ./lab_server:/app
+    networks:
+      - network01
+networks:
+  network01:
+    driver: bridge

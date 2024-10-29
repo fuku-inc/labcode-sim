@@ -1,3 +1,6 @@
+from timestamp import timestamp
+
+
 class Log:
     start_time: str
     end_time: str
@@ -7,9 +10,9 @@ class Log:
     protocol_id: str
     is_transport: bool
 
-    def __init__(self, start_time, end_time, status, user_id, lab_id, protocol_id, is_transport):
-        self.start_time = start_time
-        self.end_time = end_time
+    def __init__(self, status, user_id, lab_id, protocol_id, is_transport):
+        self.start_time = timestamp()
+        self.end_time = ""
         self.status = status
         self.user_id = user_id
         self.lab_id = lab_id
@@ -20,25 +23,23 @@ class Log:
 class OperationLog(Log):
     is_transport = False
     task_id: str
+    # 下3つは共通なので、Logクラスに移動
     operator_id: str
     execution_id: str
     storage_address: str
 
     def __init__(
             self,
-            start_time,
-            end_time,
             status,
             user_id,
             lab_id,
             protocol_id,
-            is_transport,
             task_id,
             operator_id,
             execution_id,
             storage_address
     ):
-        super().__init__(start_time, end_time, status, user_id, lab_id, protocol_id, is_transport)
+        super().__init__(status, user_id, lab_id, protocol_id, is_transport=False)
         self.task_id = task_id
         self.operator_id = operator_id
         self.execution_id = execution_id
@@ -66,19 +67,18 @@ class TransportLog(Log):
     source_port_id: str
     destination_task_id: str
     destination_port_id: str
+
+    # 下3つは共通なので、Logクラスに移動!
     operator_id: str
     execution_id: str
     storage_address: str
 
     def __init__(
             self,
-            start_time,
-            end_time,
             status,
             user_id,
             lab_id,
             protocol_id,
-            is_transport,
             source_task_id,
             source_port_id,
             destination_task_id,
@@ -87,7 +87,7 @@ class TransportLog(Log):
             execution_id,
             storage_address
     ):
-        super().__init__(start_time, end_time, status, user_id, lab_id, protocol_id, is_transport)
+        super().__init__(status, user_id, lab_id, protocol_id, is_transport=True)
         self.source_task_id = source_task_id
         self.source_port_id = source_port_id
         self.destination_task_id = destination_task_id

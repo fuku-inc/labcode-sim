@@ -41,13 +41,13 @@ def generate_timestamp():
 
 
 @app.get("/logs/{timestamp}")
-async def get_log(timestamp: str):
+def get_log(timestamp: str):
     """タイムスタンプを指定して、ログ全体を取得"""
     return read_log(timestamp)
 
 
 @app.post("/logs")
-async def create_log(data: Dict[str, Any]):
+def create_log(data: Dict[str, Any]):
     """
     新たなJSONファイルを作成し、そのタイムスタンプを返す
     初期データは引数から取得する
@@ -63,16 +63,17 @@ async def create_log(data: Dict[str, Any]):
 
 
 @app.patch("/logs/{timestamp}")
-async def update_log(timestamp: str, update_data: Dict[str, Any]):
+def update_log(timestamp: str, update_data: Dict[str, Any]):
     """タイムスタンプと更新項目と更新値を指定して、ログの内容を更新する"""
     log_data = read_log(timestamp)
-    log_data["data"].update(update_data)
+    # print(log_data)
+    log_data.update(update_data)
     write_log(timestamp, log_data)
     return log_data
 
 
 @app.delete("/logs/{timestamp}")
-async def delete_log(timestamp: str):
+def delete_log(timestamp: str):
     """タイムスタンプを指定して、ログファイルを削除する"""
     file_path = get_log_file(timestamp)
     try:
