@@ -1,7 +1,8 @@
 from typing import List, Dict
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from timestamp import timestamp
+from timestamp import timestamp, timestamp_filename
 # from time import sleep
+from pathlib import Path
 # from random import uniform
 # from pathlib import Path
 from log import OperationLog, TransportLog
@@ -103,12 +104,13 @@ class Conductor:
                 suit_machine = random.choice([machine for machine in self.machines if machine.type == operator_type_dict[operation_id]])
                 operation_log = OperationLog(
                     status="running",
+                    start_time=timestamp(),
                     user_id="user_id",
                     lab_id="lab_id",
                     protocol_id="protocol_id",
                     task_id="task_id",
                     execution_id="execution_id",
-                    storage_address="storage_address", # conductorで指定する
+                    storage_address="storage_address",  # conductorで指定する
                     operator_id=suit_machine.id,
                 )
                 # 開始時刻はここで指定する（ログサーバーでは指定しない）
@@ -124,6 +126,7 @@ class Conductor:
             for connection in activated_connection:
                 transport_log = TransportLog(
                     status="running",
+                    start_time=timestamp(),
                     user_id="user_id",
                     lab_id="lab_id",
                     protocol_id="protocol_id",
@@ -164,12 +167,13 @@ def read_uploaded_yaml(yaml_file: UploadFile = File(...)):
 def run_experiment(protocol_yaml: UploadFile = File(...), manipulate_yaml: UploadFile = File(...)):
     protocol = read_uploaded_yaml(protocol_yaml)
     manipulates = read_uploaded_yaml(manipulate_yaml)
+    storage_address = Path("/app/storage") / Path(timestamp_filename())
     machines = [
-        HumanPlateServer("human_plate_server", manipulates),
-        TecanFluent480("tecan_fluent_480", manipulates),
-        OpentronsOT2("opentrons_ot2", manipulates),
-        TecanInfinite200Pro("tecan_infinite_200_pro", manipulates),
-        HumanStoreLabware("human_store_labware", manipulates)
+        HumanPlateServer("human_plate_server", manipulates, storage_address),
+        TecanFluent480("tecan_fluent_480", manipulates, storage_address),
+        OpentronsOT2("opentrons_ot2", manipulates, storage_address),
+        TecanInfinite200Pro("tecan_infinite_200_pro", manipulates, storage_address),
+        HumanStoreLabware("human_store_labware", manipulates, storage_address),
     ]
     conductor = Conductor(protocol, manipulates, machines)
     conductor.run()

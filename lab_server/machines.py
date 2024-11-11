@@ -2,28 +2,28 @@ from lib_operator import Operator
 
 
 class HumanPlateServer(Operator):
-    def __init__(self, id, manipulate_list):
-        super().__init__(id, manipulate_list=manipulate_list, type="ServePlate96")
+    def __init__(self, id, manipulate_list, storage_address):
+        super().__init__(id, manipulate_list=manipulate_list, storage_address=storage_address, type="ServePlate96")
 
 
 class TecanFluent480(Operator):
-    def __init__(self, id, manipulate_list):
-        super().__init__(id, manipulate_list=manipulate_list, type="DispenseLiquid96Wells")
+    def __init__(self, id, manipulate_list, storage_address):
+        super().__init__(id, manipulate_list=manipulate_list, storage_address=storage_address, type="DispenseLiquid96Wells")
 
 
 class OpentronsOT2(Operator):
-    def __init__(self, id, manipulate_list):
-        super().__init__(id, manipulate_list=manipulate_list, type="DispenseLiquid96Wells")
+    def __init__(self, id, manipulate_list, storage_address):
+        super().__init__(id, manipulate_list=manipulate_list, storage_address=storage_address, type="DispenseLiquid96Wells")
 
 
 class TecanInfinite200Pro(Operator):
-    def __init__(self, id, manipulate_list):
-        super().__init__(id, manipulate_list=manipulate_list, type="ReadAbsorbance3Colors")
+    def __init__(self, id, manipulate_list, storage_address):
+        super().__init__(id, manipulate_list=manipulate_list, storage_address=storage_address, type="ReadAbsorbance3Colors")
 
 
 class HumanStoreLabware(Operator):
-    def __init__(self, id, manipulate_list):
-        super().__init__(id, manipulate_list=manipulate_list, type="StoreLabware")
+    def __init__(self, id, manipulate_list, storage_address):
+        super().__init__(id, manipulate_list=manipulate_list, storage_address=storage_address, type="StoreLabware")
 
 
 # machines = [

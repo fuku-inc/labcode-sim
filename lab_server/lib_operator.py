@@ -9,12 +9,12 @@ class Operator:
     type: str
     task_input: List[str]
     task_output: List[str]
-    storage_address: str
+    storage_address: Path
 
-    def __init__(self, id, type, manipulate_list):
+    def __init__(self, id, type, manipulate_list, storage_address):
         self.id = id
         self.type = type
-        self.storage_address = Path("/app/storage") / Path(id)
+        self.storage_address = storage_address / Path(id)
         # 該当するmanipulateが1つしかないことを想定している。
         manipulate = [manipulate for manipulate in manipulate_list if manipulate['name'] == type][0]
         if manipulate.get('input'):
