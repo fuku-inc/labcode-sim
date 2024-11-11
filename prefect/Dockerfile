@@ -5,15 +5,13 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Copy the dependencies file to the working directory
-COPY requirements.txt .
+# COPY requirements.txt .
 
 # Install any dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
 RUN pip install -U prefect
-COPY lab_server.py .
-COPY log.py .
 
-CMD [ "uvicorn", "lab_server:app", "--reload", "--host","0.0.0.0","--port","8080"]
+RUN prefect config set PREFECT_API_URL="http://0.0.0.0:4200/api"
 
-EXPOSE 8080
+CMD [ "prefect", "server", "start", "--host","0.0.0.0"]
+
+EXPOSE 4200

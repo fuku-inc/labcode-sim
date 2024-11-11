@@ -1,4 +1,5 @@
 from typing import List, Dict
+from prefect import task, flow
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from timestamp import timestamp, timestamp_filename
 # from time import sleep
@@ -95,6 +96,7 @@ class Conductor:
         ret_list.reverse()
         return ret_list
 
+    @flow
     def run(self):
         operators = self.protocol['operations']
         operator_type_dict = {operator['id']: operator['type'] for operator in operators}

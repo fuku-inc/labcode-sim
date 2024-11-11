@@ -1,6 +1,8 @@
 services:
   log_server:
     build: log_server
+    environment:
+      - PREFECT_API_URL=http://prefect:4200
     volumes:
       - ./log_server:/app
     tty: true
@@ -10,11 +12,21 @@ services:
       - network01
   lab_server:
     build: lab_server
+    environment:
+      - PREFECT_API_URL=http://prefect:4200/api
     tty: true
     ports:
       - "8080:8080"
     volumes:
       - ./lab_server:/app
+    networks:
+      - network01
+  prefect:
+    build: prefect
+    environment:
+      - PREFECT_API_URL=http://localhost:4200/api
+    ports:
+      - "4200:4200"
     networks:
       - network01
 networks:
