@@ -140,6 +140,7 @@ class Process:
         response = requests.post(
             url=f'{LOG_SERVER_URL}/processes/',
             data={
+                "name": self.id_in_protocol,
                 "run_id": self.run_id,
                 "storage_address": self.storage_address
             }
