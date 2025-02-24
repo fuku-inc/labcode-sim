@@ -75,17 +75,27 @@ class Operation:
                 "process_id": self.process_db_id,
                 "name": self.name,
                 "status": self.status,
-                "storage_address": self.storage_address,
+                "storage_address": "",
                 "is_transport": self.is_transport,
                 "is_data": self.is_data
             }
         )
         self.db_id = response.json()["id"]
+        self.storage_address = f"/storage/operations/{self.db_id}"
+        requests.patch(
+            url=f'{LOG_SERVER_URL}/operations/{self.db_id}',
+            data={
+                "attribute": "storage_address",
+                "new_value": self.storage_address
+            }
+        )
 
     def run(self):
 
         self.started_at = datetime.now().isoformat()
         self.status = "running"
+        storage_path = Path(self.storage_address)
+        storage_path.mkdir(parents=True, exist_ok=True)
         requests.patch(
             url=f'{LOG_SERVER_URL}/operations/{self.db_id}',
             data={
@@ -104,6 +114,17 @@ class Operation:
         sleep(running_time)
         self.finished_at = datetime.now().isoformat()
         self.status = "completed"
+        with open(storage_path / "log.txt", "w") as f:
+            f.write(f"Operation {self.name} completed at {self.finished_at}")
+        with open(storage_path / "log.txt", "r") as f:
+            log = f.read()
+            requests.patch(
+                url=f'{LOG_SERVER_URL}/operations/{self.db_id}',
+                data={
+                    "attribute": "log",
+                    "new_value": log
+                }
+            )
         requests.patch(
             url=f'{LOG_SERVER_URL}/operations/{self.db_id}',
             data={
@@ -118,8 +139,6 @@ class Operation:
                 "new_value": self.status
             }
         )
-
-
 
 
 class Process:
