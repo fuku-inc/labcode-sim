@@ -342,7 +342,7 @@ async def run_experiment(project_id: int, protocol_name, user_id: int, protocol_
     protocol_md5 = await calc_md5_from_file(protocol_yaml)
     protocol = await read_uploaded_yaml(protocol_yaml)
     manipulates = await read_uploaded_yaml(manipulate_yaml)
-    storage_address = Path("/app/storage") / Path(timestamp_filename())
+    storage_address = "https://drive.google.com/drive/folders/18dhaS7ZKYonfebM4oV5raU79CZQdrHJK?usp=sharing"
     machines = [
         HumanPlateServer("human_plate_server", manipulates, storage_address),
         TecanFluent480("tecan_fluent_480", manipulates, storage_address),
