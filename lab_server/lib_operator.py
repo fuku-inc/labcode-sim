@@ -23,7 +23,6 @@ class Operator:
             self.task_output = [output['id'] for output in manipulate['output']]
 
     def run(self):
-        print(self.storage_address)
         Path(self.storage_address).mkdir(parents=True)
         metadata_path = Path(self.storage_address) / Path('metadata.json')
         # ランダムな時間だけ待つ

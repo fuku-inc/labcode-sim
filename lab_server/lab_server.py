@@ -85,7 +85,6 @@ class Operation:
     def run(self):
 
         self.started_at = datetime.now().isoformat()
-        print(self.started_at)
         self.status = "running"
         requests.patch(
             url=f'{LOG_SERVER_URL}/operations/{self.db_id}',
@@ -237,7 +236,6 @@ def create_process_and_operation_and_edge(run_id, protocol_dict, machines):
     [operation.post() for operation in operation_list]
 
     edge_db_id_list = []
-    # print(edge_list)
     for edge in edge_list:
         operation_db_id_from = [operation.db_id for operation in operation_list if operation.name == edge["from"]][0]
         operation_db_id_to = [operation.db_id for operation in operation_list if operation.name == edge["to"]][0]
@@ -255,9 +253,7 @@ def create_process_and_operation_and_edge(run_id, protocol_dict, machines):
                 "to_id": edge["to"]
             }
         )
-        # print(response.json())
     return operation_list, edge_list
-    # print(edge_db_id_list)
 
 
 def create_plan(connections: List[Dict[str, str]]) -> List[str]:
