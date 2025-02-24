@@ -160,10 +160,18 @@ class Process:
             data={
                 "name": self.id_in_protocol,
                 "run_id": self.run_id,
-                "storage_address": self.storage_address
+                "storage_address": ""
             }
         )
         self.db_id = response.json()["id"]
+        self.storage_address = f"/storage/processes/{self.db_id}"
+        requests.patch(
+            url=f'{LOG_SERVER_URL}/processes/{self.db_id}',
+            data={
+                    "attribute": "storage_address",
+                    "new_value": self.storage_address
+            }
+        )
 
     def operation_mapping(self, machines: List[Operator]) -> Operation:
         if self.id_in_protocol in ["input", "output"]:
