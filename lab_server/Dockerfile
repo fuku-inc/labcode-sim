@@ -1,6 +1,9 @@
 # Latest Python with specific libraries
 FROM python:3.12-slim
 
+# Set timezone to Asia/Tokyo
+ENV TZ=Asia/Tokyo
+
 # Set the working directory in the container
 WORKDIR /app
 
